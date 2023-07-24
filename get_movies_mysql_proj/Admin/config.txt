@@ -1,0 +1,4 @@
+user, root
+password, your_password
+host, localhost
+allow_local_infile, True

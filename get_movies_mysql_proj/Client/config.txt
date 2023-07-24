@@ -1,0 +1,5 @@
+user, root
+password, your_password
+host, localhost
+database, moviesDB
+allow_local_infile, True

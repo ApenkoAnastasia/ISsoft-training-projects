@@ -1,0 +1,1793 @@
+﻿{
+  "paragraphs": [
+    {
+      "text": "%md\n# Zeppelin notebook to get top N most rated movies\n\n## Description\n\nIt's a zeppelin notebook to determine the top N most rated movies (by average rating) for each specified genre. It allows to set filters for the search: genres, regular expression, years from and to, as well as a number, showing how many movies of each genre to display. At the same time, it sorts movies by genre and average ratings; in case of the same rating then sort by year and title. There is a paragraph to enter arguments for filtering movies. \n\n## Installation\n#### Requirements \nIt requires [Python](https://www.python.org/downloads/)  v3+ to run, Docker and Bash.\nTo install Zeppelin run command:\n```\ndocker run -p 8080:8080 -v /tmp:/tmp --name zeppelin apache/zeppelin:0.9.0\n```\nThen it will start Zeppelin on port 8080.",
+      "user": "anonymous",
+      "dateUpdated": "2021-09-04T21:34:52+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 13,
+        "editorHide": true,
+        "title": false,
+        "results": {},
+        "enabled": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1630774635297_1771705173",
+      "id": "paragraph_1630774635297_1771705173",
+      "dateCreated": "2021-09-04T16:57:15+0000",
+      "status": "FINISHED",
+      "focus": true,
+      "$$hashKey": "object:4843",
+      "dateFinished": "2021-09-04T19:21:54+0000",
+      "dateStarted": "2021-09-04T19:21:54+0000",
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h1>Zeppelin notebook to get top N most rated movies</h1>\n<h2>Description</h2>\n<p>It&rsquo;s a zeppelin notebook to determine the top N most rated movies (by average rating) for each specified genre. It allows to set filters for the search: genres, regular expression, years from and to, as well as a number, showing how many movies of each genre to display. At the same time, it sorts movies by genre and average ratings; in case of the same rating then sort by year and title. There is a paragraph to enter arguments for filtering movies.</p>\n<h2>Installation</h2>\n<h4>Requirements</h4>\n<p>It requires <a href=\"https://www.python.org/downloads/\">Python</a>  v3+ to run, Docker and Bash.<br />\nTo install Zeppelin run command:</p>\n<pre><code>docker run -p 8080:8080 -v /tmp:/tmp --name zeppelin apache/zeppelin:0.9.0\n</code></pre>\n<p>Then it will start Zeppelin on port 8080.</p>\n\n</div>"
+          }
+        ]
+      }
+    },
+    {
+      "text": "%md\n### Download and unpack MovieLens files\n\nOn next paragraph will be downloaded ml-latest-small Dataset from [MovieLens](https://grouplens.org/datasets/movielens/) web site, unpacked movies.csv and ratings.csv into /tmp/Datasets folder.",
+      "user": "anonymous",
+      "dateUpdated": "2021-09-04T21:35:02+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1630779172805_68821368",
+      "id": "paragraph_1630779172805_68821368",
+      "dateCreated": "2021-09-04T18:12:52+0000",
+      "status": "FINISHED",
+      "focus": true,
+      "$$hashKey": "object:5259",
+      "dateFinished": "2021-09-04T19:21:43+0000",
+      "dateStarted": "2021-09-04T19:21:43+0000",
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h3>Download and unpack MovieLens files</h3>\n<p>On next paragraph will be downloaded ml-latest-small Dataset from <a href=\"https://grouplens.org/datasets/movielens/\">MovieLens</a> web site, unpacked movies.csv and ratings.csv into /tmp/Datasets folder.</p>\n\n</div>"
+          }
+        ]
+      }
+    },
+    {
+      "text": "%sh \n\nif [ -e /tmp/Datasets/ml-latest-small/ratings.csv -a -e /tmp/Datasets/ml-latest-small/movies.csv ]; then \n\techo \"Files csv exists.\"\nelif [ -e /tmp/ml-latest-small.zip ]; then \n\tunzip /tmp/ml-latest-small.zip \\ml-latest-small/ratings.csv \\ml-latest-small/movies.csv -d /tmp/Datasets \n\trm /tmp/ml-latest-small.zip\nelse \n\twget -P /tmp https://files.grouplens.org/datasets/movielens/ml-latest-small.zip \n\tunzip /tmp/ml-latest-small.zip \\ml-latest-small/ratings.csv \\ml-latest-small/movies.csv -d /tmp/Datasets \n\trm /tmp/ml-latest-small.zip\nfi ",
+      "user": "anonymous",
+      "dateUpdated": "2021-09-04T21:38:37+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "sh",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/sh",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1630773592057_1250534578",
+      "id": "paragraph_1630606205202_1899247414",
+      "dateCreated": "2021-09-04T16:39:52+0000",
+      "status": "FINISHED",
+      "focus": true,
+      "$$hashKey": "object:384",
+      "dateFinished": "2021-09-04T21:38:37+0000",
+      "dateStarted": "2021-09-04T21:38:37+0000"
+    },
+    {
+      "text": "%md\n### Put csv files into hdfs",
+      "user": "anonymous",
+      "dateUpdated": "2021-09-04T22:00:38+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1630792628222_76605449",
+      "id": "paragraph_1630792628222_76605449",
+      "dateCreated": "2021-09-04T21:57:08+0000",
+      "status": "FINISHED",
+      "focus": true,
+      "$$hashKey": "object:10260",
+      "dateFinished": "2021-09-04T21:57:35+0000",
+      "dateStarted": "2021-09-04T21:57:35+0000",
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h3>Put csv files into hdfs</h3>\n\n</div>"
+          }
+        ]
+      }
+    },
+    {
+      "text": "%sh\n\nhdfs dfs -mkdir -p /tmp/Datasets/ml-latest-small\n\nhdfs dfs -put -f /tmp/Datasets/ml-latest-small/movies.csv /tmp/Datasets/ml-latest-small/\n\nhdfs dfs -put -f /tmp/Datasets/ml-latest-small/ratings.csv /tmp/Datasets/ml-latest-small/\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-09-04T22:06:22+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "sh",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/sh",
+        "fontSize": 9,
+        "results": {},
+        "enabled": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1630792247520_1970467410",
+      "id": "paragraph_1630792247520_1970467410",
+      "dateCreated": "2021-09-04T21:50:47+0000",
+      "status": "READY",
+      "focus": true,
+      "$$hashKey": "object:10182"
+    },
+    {
+      "text": "%md\n### Enumeration of required arguments\nThis arguments can be changed to get another list of movies.",
+      "user": "anonymous",
+      "dateUpdated": "2021-09-04T21:35:11+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1630780115726_1774592862",
+      "id": "paragraph_1630780115726_1774592862",
+      "dateCreated": "2021-09-04T18:28:35+0000",
+      "status": "FINISHED",
+      "focus": true,
+      "$$hashKey": "object:5371",
+      "dateFinished": "2021-09-04T19:22:00+0000",
+      "dateStarted": "2021-09-04T19:22:00+0000",
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h3>Enumeration of required arguments</h3>\n<p>This arguments can be changed to get another list of movies.</p>\n\n</div>"
+          }
+        ]
+      }
+    },
+    {
+      "text": "%pyspark\n\nGENRES = ['Thriller', 'Crime', 'War', 'Fantasy']\nYEAR_FROM = 1970\nYEAR_TO = 2010\nREGEXP = 'God'\nN = 5",
+      "user": "anonymous",
+      "dateUpdated": "2021-09-04T21:47:40+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1630773592057_1860877097",
+      "id": "paragraph_1630671712148_1177855083",
+      "dateCreated": "2021-09-04T16:39:52+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:391",
+      "dateFinished": "2021-09-04T21:47:40+0000",
+      "dateStarted": "2021-09-04T21:47:40+0000"
+    },
+    {
+      "text": "%md\n\n## Local mode\n\nCreate RDD of movies and ratings from datasets",
+      "user": "anonymous",
+      "dateUpdated": "2021-09-04T21:44:21+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 6,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1630780609107_457428922",
+      "id": "paragraph_1630780609107_457428922",
+      "dateCreated": "2021-09-04T18:36:49+0000",
+      "status": "FINISHED",
+      "focus": true,
+      "$$hashKey": "object:5524",
+      "dateFinished": "2021-09-04T21:44:17+0000",
+      "dateStarted": "2021-09-04T21:44:17+0000",
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h2>Local mode</h2>\n<p>Create RDD of movies and ratings from datasets</p>\n\n</div>"
+          }
+        ]
+      }
+    },
+    {
+      "text": "%md\n## HDFS mode\nCreate RDD of movies and ratings from hdfs file",
+      "user": "anonymous",
+      "dateUpdated": "2021-09-04T21:44:29+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 6,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1630791580213_1857635878",
+      "id": "paragraph_1630791580213_1857635878",
+      "dateCreated": "2021-09-04T21:39:40+0000",
+      "status": "FINISHED",
+      "focus": true,
+      "$$hashKey": "object:8304",
+      "dateFinished": "2021-09-04T21:44:14+0000",
+      "dateStarted": "2021-09-04T21:44:14+0000",
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h2>HDFS mode</h2>\n<p>Create RDD of movies and ratings from hdfs file</p>\n\n</div>"
+          }
+        ]
+      }
+    },
+    {
+      "text": "%pyspark\n\nrdd_movies = sc.textFile(\"///tmp/Datasets/ml-latest-small/movies.csv\")\nrdd_ratings = sc.textFile(\"///tmp/Datasets/ml-latest-small/ratings.csv\")",
+      "user": "anonymous",
+      "dateUpdated": "2021-09-04T21:47:46+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 6,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1630773592057_1283763855",
+      "id": "paragraph_1630617836515_518061877",
+      "dateCreated": "2021-09-04T16:39:52+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:392",
+      "dateFinished": "2021-09-04T21:47:46+0000",
+      "dateStarted": "2021-09-04T21:47:46+0000"
+    },
+    {
+      "text": "%pyspark\n\nrdd_movies = sc.textFile(\"hdfs:///tmp/Datasets/ml-latest-small/movies.csv\")\nrdd_ratings = sc.textFile(\"hdfs:///tmp/Datasets/ml-latest-small/ratings.csv\")",
+      "user": "anonymous",
+      "dateUpdated": "2021-09-04T22:06:41+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 6,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "results": {},
+        "enabled": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1630791878791_947539596",
+      "id": "paragraph_1630791878791_947539596",
+      "dateCreated": "2021-09-04T21:44:38+0000",
+      "status": "READY",
+      "focus": true,
+      "$$hashKey": "object:8631"
+    },
+    {
+      "text": "%md\n### Functions for parse movies rows.\n\nget_title_year function return splitted title and year from line.\nget_genres function split line with whole genres by '|' and return list of genres. \nget_splitted_line split line by ',' into movie id, title, year, all genres.\nget_movies_id split line for movie id, title, year, all genres and return just movie id. \nget_list_movies - return id, title, year, genres in special form.",
+      "user": "anonymous",
+      "dateUpdated": "2021-09-04T21:36:34+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1630780929269_267428985",
+      "id": "paragraph_1630780929269_267428985",
+      "dateCreated": "2021-09-04T18:42:09+0000",
+      "status": "FINISHED",
+      "focus": true,
+      "$$hashKey": "object:5656",
+      "dateFinished": "2021-09-04T21:07:42+0000",
+      "dateStarted": "2021-09-04T21:07:42+0000",
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h3>Functions for parse movies rows.</h3>\n<p>get_title_year function return splitted title and year from line.<br />\nget_genres function split line with whole genres by &lsquo;|&rsquo; and return list of genres.<br />\nget_splitted_line split line by &lsquo;,&rsquo; into movie id, title, year, all genres.<br />\nget_movies_id split line for movie id, title, year, all genres and return just movie id.<br />\nget_list_movies - return id, title, year, genres in special form.</p>\n\n</div>"
+          }
+        ]
+      }
+    },
+    {
+      "text": "%pyspark\n\nimport re\n\n\ndef get_title_year(original_title):\n\n    year = None\n\n    for i in range(0, len(original_title)):\n        original_title[i] = original_title[i].replace('\"', '')\\\n                                             .replace('(', '')\\\n                                             .replace(')', '')\\\n                                             .replace('\\r\\n', '')\n        digits = re.findall(r'\\d\\d\\d\\d+', original_title[i])\n\n        if digits:\n            year = str(digits[-1])\n            original_title[i] = original_title[i].replace(year, '')\n\n    title = ''.join(original_title[:])\n\n    return title, year\n\n\ndef get_genres(all_genres):\n\n    if all_genres:\n        distinct_genres = all_genres.split('|')\n    else:\n        distinct_genres = None\n\n    return distinct_genres\n    \n    \ndef get_movies_id(line):\n\n    movie_id = line[0]\n    title = line[1]\n    year = line[2]\n    all_genres = line[3]\n    \n    return int(movie_id)\n    \n    \ndef get_splitted_line(line):\n    \n    parts = line.split(',')\n    all_genres = get_genres(parts[-1])\n    original_title = []\n    \n    for word in parts[:-1]:\n        \n        if word.isdigit():\n            movie_id = word\n            continue\n        original_title.append(word)\n\n    title, year = get_title_year(original_title)\n\n    return [movie_id, title, year, all_genres]\n    \n    \ndef get_list_movies(line):\n\n    movie_id = line[0]\n    title = line[1]\n    year = line[2]\n    all_genres = line[3]\n    \n    return [int(movie_id), [title, year, all_genres]]",
+      "user": "anonymous",
+      "dateUpdated": "2021-09-04T21:47:59+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1630773592058_260112655",
+      "id": "paragraph_1630620956419_1941675771",
+      "dateCreated": "2021-09-04T16:39:52+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:398",
+      "focus": true,
+      "dateFinished": "2021-09-04T21:47:59+0000",
+      "dateStarted": "2021-09-04T21:47:59+0000"
+    },
+    {
+      "text": "%md\n### RDD of filtered movies\n\nheader_movies - first line which is heading of csv file.\nrdd_splitted_movies - RDD splitted into id, title, year and list of genres.\nrdd_filtered_movies - RDD of filtered movies which match the arguments.",
+      "user": "anonymous",
+      "dateUpdated": "2021-09-04T21:36:39+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1630782586441_1739736798",
+      "id": "paragraph_1630782586441_1739736798",
+      "dateCreated": "2021-09-04T19:09:46+0000",
+      "status": "FINISHED",
+      "focus": true,
+      "$$hashKey": "object:5951",
+      "dateFinished": "2021-09-04T19:51:46+0000",
+      "dateStarted": "2021-09-04T19:51:46+0000",
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h3>RDD of filtered movies</h3>\n<p>header_movies - first line which is heading of csv file.<br />\nrdd_splitted_movies - RDD splitted into id, title, year and list of genres.<br />\nrdd_filtered_movies - RDD of filtered movies which match the arguments.</p>\n\n</div>"
+          }
+        ]
+      }
+    },
+    {
+      "text": "%pyspark\n\nheader_movies = rdd_movies.first()\n\nrdd_splitted_movies = rdd_movies.filter(lambda line: line != header_movies)\\\n                                .map(get_splitted_line)\n                                \nrdd_filtered_movies = rdd_splitted_movies.filter(\\\n                            lambda row: bool(re.search(REGEXP, row[1])) and (YEAR_FROM <= int(row[2]) <= YEAR_TO) and (set(GENRES) & set(row[3]) != set()) ) \n                            # row[1] - title; row[2] - year; row[3] - list of genres\n\nrdd_filtered_movies.collect()\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-09-04T21:48:06+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "[['858', 'Godfather The ', '1972', ['Crime', 'Drama']],\n ['1221', 'Godfather: Part II The ', '1974', ['Crime', 'Drama']],\n ['1647', 'Playing God ', '1997', ['Crime', 'Drama', 'Thriller']],\n ['1882', 'Godzilla ', '1998', ['Action', 'Sci-Fi', 'Thriller']],\n ['2023',\n  'Godfather: Part III The ',\n  '1990',\n  ['Crime', 'Drama', 'Mystery', 'Thriller']],\n ['2364',\n  'Godzilla : The Legend Is Reborn Gojira Godzilla Return of Godzilla The ',\n  '1984',\n  ['Action', 'Horror', 'Sci-Fi', 'Thriller']],\n ['5214', 'Oh God! ', '1977', ['Comedy', 'Fantasy']],\n ['6016',\n  'City of God Cidade de Deus ',\n  '2002',\n  ['Action', 'Adventure', 'Crime', 'Drama', 'Thriller']],\n ['6186', 'Gods and Generals ', '2003', ['Action', 'Drama', 'War']],\n ['7449', 'Godsend ', '2004', ['Drama', 'Horror', 'Thriller']],\n ['33801',\n  'Godzilla: Final Wars Gojira: Fainaru uôzu ',\n  '2004',\n  ['Action', 'Adventure', 'Fantasy', 'Sci-Fi']]]"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://a59a8d98c3ee:4040/jobs/job?id=417",
+              "$$hashKey": "object:8872"
+            },
+            {
+              "jobUrl": "http://a59a8d98c3ee:4040/jobs/job?id=418",
+              "$$hashKey": "object:8873"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1630773592058_1483457630",
+      "id": "paragraph_1630618654898_48192641",
+      "dateCreated": "2021-09-04T16:39:52+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:401",
+      "focus": true,
+      "dateFinished": "2021-09-04T21:48:07+0000",
+      "dateStarted": "2021-09-04T21:48:06+0000"
+    },
+    {
+      "text": "%md\n### RDD of filtered movies id\n\nrdd_of_movies_id - return list of filtered movies for further filtering ratings.",
+      "user": "anonymous",
+      "dateUpdated": "2021-09-04T21:36:45+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1630783104456_1829688275",
+      "id": "paragraph_1630783104456_1829688275",
+      "dateCreated": "2021-09-04T19:18:24+0000",
+      "status": "FINISHED",
+      "focus": true,
+      "$$hashKey": "object:6054",
+      "dateFinished": "2021-09-04T19:22:48+0000",
+      "dateStarted": "2021-09-04T19:22:48+0000",
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h3>RDD of filtered movies id</h3>\n<p>rdd_of_movies_id - return list of filtered movies for further filtering ratings.</p>\n\n</div>"
+          }
+        ]
+      }
+    },
+    {
+      "text": "%pyspark\n\nrdd_of_movies_id = rdd_filtered_movies.map(get_movies_id)\nrdd_of_movies_id.collect()",
+      "user": "anonymous",
+      "dateUpdated": "2021-09-04T21:48:13+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "[858, 1221, 1647, 1882, 2023, 2364, 5214, 6016, 6186, 7449, 33801]"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://a59a8d98c3ee:4040/jobs/job?id=419",
+              "$$hashKey": "object:8912"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1630773592058_1203551290",
+      "id": "paragraph_1630751215080_1112513971",
+      "dateCreated": "2021-09-04T16:39:52+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:402",
+      "focus": true,
+      "dateFinished": "2021-09-04T21:48:14+0000",
+      "dateStarted": "2021-09-04T21:48:13+0000"
+    },
+    {
+      "text": "%md\n### Functions for getting average ratings\n\nfilter_id - checks if movie id is in the list and return id and rating.\nget_distinct_ratings - split by ',' line of csv ratings and return just id with its rating.\nget_average_rating - return average rating by divising the summ by the quantity.\nget_movie_id_for_ratings - return movie id for filtering and counting.",
+      "user": "anonymous",
+      "dateUpdated": "2021-09-04T21:36:55+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1630783463360_718208400",
+      "id": "paragraph_1630783463360_718208400",
+      "dateCreated": "2021-09-04T19:24:23+0000",
+      "status": "FINISHED",
+      "focus": true,
+      "$$hashKey": "object:6467",
+      "dateFinished": "2021-09-04T19:50:24+0000",
+      "dateStarted": "2021-09-04T19:50:24+0000",
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h3>Functions for getting average ratings</h3>\n<p>filter_id - checks if movie id is in the list and return id and rating.<br />\nget_distinct_ratings - split by &lsquo;,&rsquo; line of csv ratings and return just id with its rating.<br />\nget_average_rating - return average rating by divising the summ by the quantity.<br />\nget_movie_id_for_ratings - return movie id for filtering and counting.</p>\n\n</div>"
+          }
+        ]
+      }
+    },
+    {
+      "text": "%pyspark\n\ndef filter_id(line, list_of_movies_id):\n    \n    user_id, current_movie_id, rating, timestamp = line.split(',')\n    \n    for movie_id in list_of_movies_id:\n        \n        if (int(current_movie_id) == movie_id):\n            return [int(current_movie_id), float(rating)]\n\n\ndef get_distinct_ratings(line):\n    \n    user_id, movie_id, rating, timestamp = line.split(',')\n    \n    return [int(movie_id), float(rating)]\n    \n\ndef get_average_rating(line):\n    \n    movie_id = line[0]\n    quantity = line[1][0]\n    summ = line[1][1]\n    \n    return [movie_id, summ / quantity]\n    \n    \ndef get_movie_id_for_ratings(line):\n    \n    movie_id, rating = line\n    \n    return movie_id",
+      "user": "anonymous",
+      "dateUpdated": "2021-09-04T21:48:22+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1630773592057_415955397",
+      "id": "paragraph_1630674291242_943950033",
+      "dateCreated": "2021-09-04T16:39:52+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:393",
+      "dateFinished": "2021-09-04T21:48:23+0000",
+      "dateStarted": "2021-09-04T21:48:22+0000"
+    },
+    {
+      "text": "%md\n### RDD of filtered ratings\n\nheader_ratings - first line which is heading of csv file.\nlist_of_movies_id - transform RDD into list of movies id.\nfiltered_ratings - RDD of ratings only such movies which in list.",
+      "user": "anonymous",
+      "dateUpdated": "2021-09-04T21:37:10+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1630785037417_220109658",
+      "id": "paragraph_1630785037417_220109658",
+      "dateCreated": "2021-09-04T19:50:37+0000",
+      "status": "FINISHED",
+      "focus": true,
+      "$$hashKey": "object:6710",
+      "dateFinished": "2021-09-04T20:07:39+0000",
+      "dateStarted": "2021-09-04T20:07:39+0000",
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h3>RDD of filtered ratings</h3>\n<p>header_ratings - first line which is heading of csv file.<br />\nlist_of_movies_id - transform RDD into list of movies id.<br />\nfiltered_ratings - RDD of ratings only such movies which in list.</p>\n\n</div>"
+          }
+        ]
+      }
+    },
+    {
+      "text": "%pyspark\n\nheader_ratings = rdd_ratings.first()\n\nlist_of_movies_id = [movie_id for movie_id in rdd_of_movies_id.collect()]\n#print(list_of_movies_id)\n\n\nfiltered_ratings = rdd_ratings.filter(lambda line: line != header_ratings)\\\n                          .map(lambda line: [filter_id(line, list_of_movies_id)])\\\n                          .filter(lambda line: line[0]!= None)\n                          \nfiltered_ratings.collect()",
+      "user": "anonymous",
+      "dateUpdated": "2021-09-04T21:48:28+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "[[[2023, 3.0]],\n [[1882, 2.0]],\n [[858, 4.0]],\n [[858, 2.5]],\n [[858, 5.0]],\n [[1221, 4.5]],\n [[6016, 4.5]],\n [[858, 4.0]],\n [[1221, 5.0]],\n [[1882, 2.0]],\n [[858, 2.5]],\n [[1221, 2.5]],\n [[2023, 2.5]],\n [[858, 3.0]],\n [[858, 3.5]],\n [[1221, 3.5]],\n [[858, 4.5]],\n [[1221, 4.0]],\n [[2023, 3.5]],\n [[858, 4.5]],\n [[858, 4.0]],\n [[1221, 5.0]],\n [[6016, 4.0]],\n [[858, 5.0]],\n [[1221, 5.0]],\n [[2023, 5.0]],\n [[858, 5.0]],\n [[1221, 4.0]],\n [[858, 4.0]],\n [[858, 3.5]],\n [[2023, 3.5]],\n [[858, 5.0]],\n [[1221, 5.0]],\n [[1882, 2.0]],\n [[2023, 3.0]],\n [[858, 5.0]],\n [[1221, 4.0]],\n [[858, 5.0]],\n [[6016, 4.0]],\n [[858, 5.0]],\n [[1221, 5.0]],\n [[2023, 5.0]],\n [[858, 4.0]],\n [[1221, 4.0]],\n [[6016, 4.5]],\n [[858, 5.0]],\n [[1221, 5.0]],\n [[2023, 3.5]],\n [[6016, 3.5]],\n [[858, 4.0]],\n [[1221, 3.0]],\n [[1882, 3.0]],\n [[2023, 3.5]],\n [[858, 5.0]],\n [[858, 4.5]],\n [[1221, 4.5]],\n [[858, 5.0]],\n [[1221, 5.0]],\n [[6016, 5.0]],\n [[858, 5.0]],\n [[1221, 4.5]],\n [[6016, 3.0]],\n [[858, 5.0]],\n [[1221, 5.0]],\n [[858, 4.0]],\n [[1221, 4.0]],\n [[858, 3.5]],\n [[1221, 3.0]],\n [[6016, 5.0]],\n [[858, 4.0]],\n [[858, 5.0]],\n [[1221, 4.0]],\n [[1221, 5.0]],\n [[2023, 4.0]],\n [[6016, 5.0]],\n [[858, 4.0]],\n [[1221, 4.0]],\n [[858, 5.0]],\n [[858, 3.0]],\n [[858, 4.5]],\n [[1221, 4.5]],\n [[6016, 5.0]],\n [[858, 1.5]],\n [[1882, 2.0]],\n [[858, 5.0]],\n [[1221, 4.5]],\n [[6016, 5.0]],\n [[1882, 1.5]],\n [[6016, 4.5]],\n [[858, 4.0]],\n [[858, 1.5]],\n [[858, 5.0]],\n [[1221, 5.0]],\n [[858, 5.0]],\n [[858, 5.0]],\n [[6016, 3.5]],\n [[858, 4.5]],\n [[1221, 4.5]],\n [[6016, 4.0]],\n [[858, 4.0]],\n [[1221, 4.0]],\n [[6016, 4.0]],\n [[858, 3.0]],\n [[1221, 3.0]],\n [[2023, 3.0]],\n [[858, 4.0]],\n [[858, 5.0]],\n [[1221, 5.0]],\n [[858, 5.0]],\n [[1221, 3.0]],\n [[2023, 4.0]],\n [[858, 2.5]],\n [[1882, 0.5]],\n [[1882, 1.0]],\n [[858, 5.0]],\n [[1221, 4.0]],\n [[6016, 4.5]],\n [[858, 1.0]],\n [[858, 5.0]],\n [[1221, 4.0]],\n [[1882, 2.5]],\n [[858, 5.0]],\n [[1221, 5.0]],\n [[1882, 1.0]],\n [[2023, 5.0]],\n [[2364, 1.0]],\n [[858, 3.0]],\n [[1221, 3.0]],\n [[858, 4.5]],\n [[1221, 4.5]],\n [[858, 5.0]],\n [[1221, 5.0]],\n [[6016, 4.5]],\n [[858, 5.0]],\n [[858, 5.0]],\n [[1221, 4.0]],\n [[1882, 2.0]],\n [[2023, 2.0]],\n [[6016, 3.5]],\n [[6016, 5.0]],\n [[858, 4.5]],\n [[1221, 4.5]],\n [[6016, 4.0]],\n [[7449, 2.5]],\n [[858, 3.0]],\n [[5214, 4.0]],\n [[858, 4.5]],\n [[1221, 4.0]],\n [[6016, 5.0]],\n [[858, 4.5]],\n [[6016, 4.0]],\n [[858, 2.0]],\n [[1882, 3.0]],\n [[1221, 3.0]],\n [[2023, 4.0]],\n [[858, 4.0]],\n [[6016, 4.0]],\n [[858, 4.0]],\n [[1221, 4.0]],\n [[858, 4.0]],\n [[2023, 4.0]],\n [[858, 4.5]],\n [[1221, 3.5]],\n [[858, 4.0]],\n [[858, 2.0]],\n [[1221, 2.0]],\n [[1882, 2.0]],\n [[858, 4.5]],\n [[1221, 4.0]],\n [[1882, 2.0]],\n [[858, 5.0]],\n [[858, 4.5]],\n [[2023, 4.0]],\n [[6016, 5.0]],\n [[858, 4.5]],\n [[1221, 4.5]],\n [[858, 4.0]],\n [[858, 4.5]],\n [[858, 4.0]],\n [[858, 4.0]],\n [[858, 4.0]],\n [[6186, 3.0]],\n [[858, 4.0]],\n [[6016, 3.5]],\n [[858, 3.0]],\n [[1221, 4.0]],\n [[2023, 5.0]],\n [[858, 5.0]],\n [[1221, 5.0]],\n [[2023, 4.0]],\n [[858, 4.5]],\n [[1221, 4.0]],\n [[6016, 3.5]],\n [[2023, 2.0]],\n [[858, 2.0]],\n [[2023, 3.0]],\n [[6016, 3.5]],\n [[858, 4.0]],\n [[1221, 4.0]],\n [[6016, 4.0]],\n [[858, 4.5]],\n [[1221, 4.0]],\n [[1882, 2.5]],\n [[6016, 4.5]],\n [[858, 4.0]],\n [[1882, 1.0]],\n [[2023, 1.0]],\n [[6016, 4.0]],\n [[2364, 2.0]],\n [[858, 5.0]],\n [[1221, 4.0]],\n [[858, 3.5]],\n [[1221, 3.5]],\n [[1882, 1.5]],\n [[6016, 4.0]],\n [[7449, 2.5]],\n [[858, 5.0]],\n [[1221, 4.0]],\n [[858, 4.0]],\n [[2023, 1.0]],\n [[858, 5.0]],\n [[1221, 5.0]],\n [[858, 5.0]],\n [[858, 5.0]],\n [[1221, 5.0]],\n [[858, 4.0]],\n [[1221, 4.0]],\n [[858, 5.0]],\n [[1221, 4.0]],\n [[2023, 3.0]],\n [[858, 4.5]],\n [[1221, 4.5]],\n [[6016, 4.0]],\n [[858, 5.0]],\n [[1221, 3.5]],\n [[1882, 0.5]],\n [[6016, 2.5]],\n [[6016, 5.0]],\n [[858, 5.0]],\n [[1221, 5.0]],\n [[1882, 3.0]],\n [[858, 5.0]],\n [[1221, 5.0]],\n [[6016, 5.0]],\n [[858, 4.5]],\n [[1221, 4.5]],\n [[2023, 3.5]],\n [[6016, 3.5]],\n [[858, 1.5]],\n [[1221, 1.0]],\n [[6016, 1.0]],\n [[858, 5.0]],\n [[1221, 4.0]],\n [[1882, 1.0]],\n [[2023, 3.0]],\n [[5214, 1.0]],\n [[858, 5.0]],\n [[6016, 3.0]],\n [[6016, 4.0]],\n [[858, 5.0]],\n [[1221, 5.0]],\n [[858, 1.5]],\n [[1221, 1.0]],\n [[858, 4.0]],\n [[858, 5.0]],\n [[2023, 3.0]],\n [[6016, 5.0]],\n [[858, 3.5]],\n [[1221, 4.0]],\n [[858, 5.0]],\n [[1221, 5.0]],\n [[858, 2.0]],\n [[858, 4.0]],\n [[858, 5.0]],\n [[6016, 5.0]],\n [[6016, 4.0]],\n [[858, 4.0]],\n [[858, 4.5]],\n [[1221, 5.0]],\n [[858, 4.5]],\n [[1221, 4.5]],\n [[6016, 5.0]],\n [[858, 3.0]],\n [[1221, 3.0]],\n [[6016, 5.0]],\n [[858, 4.0]],\n [[1221, 3.5]],\n [[858, 5.0]],\n [[1221, 5.0]],\n [[6016, 5.0]],\n [[858, 3.0]],\n [[6016, 4.0]],\n [[1882, 2.0]],\n [[858, 4.0]],\n [[858, 5.0]],\n [[1221, 5.0]],\n [[1647, 2.0]],\n [[858, 2.5]],\n [[858, 5.0]],\n [[1221, 5.0]],\n [[2023, 4.0]],\n [[858, 5.0]],\n [[858, 5.0]],\n [[1221, 4.0]],\n [[858, 5.0]],\n [[1221, 4.0]],\n [[2023, 2.0]],\n [[858, 5.0]],\n [[1221, 5.0]],\n [[858, 4.0]],\n [[1221, 4.5]],\n [[858, 3.0]],\n [[858, 4.0]],\n [[1221, 5.0]],\n [[1882, 3.0]],\n [[2023, 3.0]],\n [[6016, 4.0]],\n [[858, 5.0]],\n [[858, 5.0]],\n [[1221, 4.0]],\n [[858, 4.5]],\n [[1221, 4.5]],\n [[6016, 3.5]],\n [[6016, 4.5]],\n [[858, 5.0]],\n [[1221, 4.0]],\n [[2023, 3.0]],\n [[1221, 5.0]],\n [[6016, 4.0]],\n [[858, 5.0]],\n [[1221, 4.5]],\n [[858, 5.0]],\n [[1221, 5.0]],\n [[858, 5.0]],\n [[1221, 5.0]],\n [[858, 5.0]],\n [[1221, 4.5]],\n [[858, 5.0]],\n [[1221, 5.0]],\n [[1647, 3.0]],\n [[1882, 3.0]],\n [[6016, 4.0]],\n [[858, 5.0]],\n [[1221, 5.0]],\n [[6016, 4.5]],\n [[858, 5.0]],\n [[1221, 5.0]],\n [[6016, 5.0]],\n [[858, 5.0]],\n [[1221, 4.0]],\n [[858, 4.0]],\n [[858, 3.0]],\n [[1221, 2.5]],\n [[858, 3.5]],\n [[1221, 3.5]],\n [[2023, 3.5]],\n [[6016, 4.5]],\n [[858, 4.0]],\n [[858, 4.0]],\n [[1221, 4.0]],\n [[6016, 4.0]],\n [[6016, 3.5]],\n [[858, 5.0]],\n [[6016, 5.0]],\n [[858, 5.0]],\n [[1221, 5.0]],\n [[2023, 5.0]],\n [[6016, 4.0]],\n [[6016, 2.0]],\n [[858, 5.0]],\n [[1221, 5.0]],\n [[1882, 3.0]],\n [[2023, 3.0]],\n [[6016, 5.0]],\n [[858, 5.0]],\n [[1221, 5.0]],\n [[2023, 5.0]],\n [[858, 4.0]],\n [[1221, 4.0]],\n [[6016, 4.0]],\n [[858, 5.0]],\n [[1221, 4.5]],\n [[1221, 4.5]],\n [[858, 5.0]],\n [[1221, 5.0]],\n [[858, 5.0]],\n [[1221, 5.0]],\n [[2023, 3.0]],\n [[6016, 4.0]],\n [[858, 5.0]],\n [[1221, 5.0]],\n [[858, 5.0]],\n [[1221, 5.0]],\n [[1882, 2.0]],\n [[5214, 3.0]],\n [[6016, 4.0]],\n [[1882, 3.5]],\n [[858, 4.0]],\n [[858, 5.0]],\n [[1221, 5.0]],\n [[2023, 3.0]],\n [[6016, 3.5]],\n [[858, 4.0]],\n [[1221, 3.5]],\n [[1882, 1.5]],\n [[6016, 4.0]],\n [[1882, 1.0]],\n [[6016, 4.0]],\n [[858, 3.0]],\n [[858, 5.0]],\n [[1221, 5.0]],\n [[858, 5.0]],\n [[1221, 5.0]],\n [[858, 4.5]],\n [[858, 5.0]],\n [[1221, 4.0]],\n [[858, 4.0]],\n [[858, 4.5]],\n [[1221, 4.0]],\n [[858, 4.5]],\n [[1882, 0.5]],\n [[858, 2.0]],\n [[858, 4.5]],\n [[1221, 4.0]],\n [[2023, 2.5]],\n [[6016, 4.5]],\n [[858, 5.0]],\n [[2023, 4.0]],\n [[858, 5.0]],\n [[1221, 5.0]],\n [[6016, 5.0]],\n [[858, 5.0]],\n [[1882, 3.0]],\n [[858, 3.0]],\n [[858, 5.0]],\n [[1221, 5.0]],\n [[858, 5.0]],\n [[1221, 3.0]],\n [[858, 5.0]],\n [[1221, 4.0]],\n [[2023, 4.0]],\n [[858, 4.5]],\n [[1221, 4.0]],\n [[6016, 4.5]],\n [[858, 5.0]],\n [[6016, 5.0]],\n [[858, 3.0]],\n [[1221, 3.0]],\n [[858, 5.0]],\n [[1221, 5.0]],\n [[2023, 3.0]],\n [[858, 5.0]],\n [[1221, 4.0]],\n [[858, 4.0]],\n [[858, 3.5]],\n [[1221, 3.0]],\n [[1882, 2.0]],\n [[858, 5.0]],\n [[1221, 5.0]],\n [[2023, 3.0]],\n [[858, 4.0]],\n [[1221, 4.0]],\n [[1647, 2.5]],\n [[1882, 2.5]],\n [[2023, 2.5]],\n [[5214, 2.0]],\n [[6016, 3.0]],\n [[33801, 3.0]],\n [[858, 4.0]],\n [[858, 5.0]],\n [[1221, 4.5]],\n [[6016, 4.0]],\n [[858, 5.0]],\n [[1221, 5.0]],\n [[2023, 2.0]],\n [[858, 4.0]],\n [[1221, 4.0]],\n [[6016, 4.0]],\n [[858, 4.0]],\n [[858, 5.0]],\n [[1221, 4.5]],\n [[1882, 1.5]],\n [[2023, 4.5]],\n [[6016, 3.0]],\n [[858, 5.0]],\n [[1221, 5.0]],\n [[6016, 5.0]]]"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://a59a8d98c3ee:4040/jobs/job?id=420",
+              "$$hashKey": "object:9000"
+            },
+            {
+              "jobUrl": "http://a59a8d98c3ee:4040/jobs/job?id=421",
+              "$$hashKey": "object:9001"
+            },
+            {
+              "jobUrl": "http://a59a8d98c3ee:4040/jobs/job?id=422",
+              "$$hashKey": "object:9002"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1630773592057_1973393178",
+      "id": "paragraph_1630752349175_836251610",
+      "dateCreated": "2021-09-04T16:39:52+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:395",
+      "dateFinished": "2021-09-04T21:48:30+0000",
+      "dateStarted": "2021-09-04T21:48:28+0000"
+    },
+    {
+      "text": "%md\n### RDD of average ratings\n\nrdd_ratings_sum - return RDD of movie_id with its sum of ratings.\nrdd_movies_quantities - return RDD of movie_id with its quantities.\nrdd_average_ratings - joins two RDD into one with average ratings.",
+      "user": "anonymous",
+      "dateUpdated": "2021-09-04T21:37:21+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1630786069128_1083513747",
+      "id": "paragraph_1630786069128_1083513747",
+      "dateCreated": "2021-09-04T20:07:49+0000",
+      "status": "FINISHED",
+      "focus": true,
+      "$$hashKey": "object:6819",
+      "dateFinished": "2021-09-04T21:04:36+0000",
+      "dateStarted": "2021-09-04T21:04:36+0000",
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h3>RDD of average ratings</h3>\n<p>rdd_ratings_sum - return RDD of movie_id with its sum of ratings.<br />\nrdd_movies_quantities - return RDD of movie_id with its quantities.<br />\nrdd_average_ratings - joins two RDD into one with average ratings.</p>\n\n</div>"
+          }
+        ]
+      }
+    },
+    {
+      "text": "%pyspark\n\n# line[0][0] - movie_id; line[0][1] - rating\n\nrdd_ratings_sum = filtered_ratings.map(lambda line: (line[0][0], line[0][1]))\\\n                                  .reduceByKey(lambda x, y: x + y)\n                                  \nrdd_movies_quantities = filtered_ratings.map(lambda line: (line[0][0], line[0][1]))\\\n                                        .map(get_movie_id_for_ratings).countByValue()\n\n\nlist_of_id_with_quantities = [(k,v) for k,v in rdd_movies_quantities.items()]\nrdd_movies_id_with_quantities = sc.parallelize(list_of_id_with_quantities)\n\n\nrdd_average_ratings = rdd_movies_id_with_quantities.leftOuterJoin(rdd_ratings_sum)\\\n                                                   .map(get_average_rating)\n\nrdd_average_ratings.collect()",
+      "user": "anonymous",
+      "dateUpdated": "2021-09-04T21:48:43+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "[[1882, 1.9545454545454546],\n [858, 4.2890625],\n [6016, 4.1466666666666665],\n [2364, 1.5],\n [5214, 2.5],\n [6186, 3.0],\n [2023, 3.3555555555555556],\n [1221, 4.25968992248062],\n [7449, 2.5],\n [1647, 2.5],\n [33801, 3.0]]"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://a59a8d98c3ee:4040/jobs/job?id=423",
+              "$$hashKey": "object:9076"
+            },
+            {
+              "jobUrl": "http://a59a8d98c3ee:4040/jobs/job?id=424",
+              "$$hashKey": "object:9077"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1630773592057_2113509376",
+      "id": "paragraph_1630755676621_1595101451",
+      "dateCreated": "2021-09-04T16:39:52+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:396",
+      "dateFinished": "2021-09-04T21:48:45+0000",
+      "dateStarted": "2021-09-04T21:48:43+0000"
+    },
+    {
+      "text": "%md\n### RDD movies with ratings\n\nrdd_movies_with_ratings - return RDD whitch join movies with its ratings.",
+      "user": "anonymous",
+      "dateUpdated": "2021-09-04T21:37:30+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1630789489981_1159236689",
+      "id": "paragraph_1630789489981_1159236689",
+      "dateCreated": "2021-09-04T21:04:49+0000",
+      "status": "FINISHED",
+      "focus": true,
+      "$$hashKey": "object:7152",
+      "dateFinished": "2021-09-04T21:09:16+0000",
+      "dateStarted": "2021-09-04T21:09:16+0000",
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h3>RDD movies with ratings</h3>\n<p>rdd_movies_with_ratings - return RDD whitch join movies with its ratings.</p>\n\n</div>"
+          }
+        ]
+      }
+    },
+    {
+      "text": "%pyspark\n\nrdd_movies_with_int = rdd_filtered_movies.map(get_list_movies)\n\nrdd_movies_with_ratings = rdd_movies_with_int.leftOuterJoin(rdd_average_ratings)\n\nrdd_movies_with_ratings.collect()",
+      "user": "anonymous",
+      "dateUpdated": "2021-09-04T21:49:06+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "[(858, (['Godfather The ', '1972', ['Crime', 'Drama']], 4.2890625)),\n (1221,\n  (['Godfather: Part II The ', '1974', ['Crime', 'Drama']], 4.25968992248062)),\n (1647, (['Playing God ', '1997', ['Crime', 'Drama', 'Thriller']], 2.5)),\n (2364,\n  (['Godzilla : The Legend Is Reborn Gojira Godzilla Return of Godzilla The ',\n    '1984',\n    ['Action', 'Horror', 'Sci-Fi', 'Thriller']],\n   1.5)),\n (5214, (['Oh God! ', '1977', ['Comedy', 'Fantasy']], 2.5)),\n (6186, (['Gods and Generals ', '2003', ['Action', 'Drama', 'War']], 3.0)),\n (7449, (['Godsend ', '2004', ['Drama', 'Horror', 'Thriller']], 2.5)),\n (33801,\n  (['Godzilla: Final Wars Gojira: Fainaru uôzu ',\n    '2004',\n    ['Action', 'Adventure', 'Fantasy', 'Sci-Fi']],\n   3.0)),\n (1882,\n  (['Godzilla ', '1998', ['Action', 'Sci-Fi', 'Thriller']],\n   1.9545454545454546)),\n (2023,\n  (['Godfather: Part III The ',\n    '1990',\n    ['Crime', 'Drama', 'Mystery', 'Thriller']],\n   3.3555555555555556)),\n (6016,\n  (['City of God Cidade de Deus ',\n    '2002',\n    ['Action', 'Adventure', 'Crime', 'Drama', 'Thriller']],\n   4.1466666666666665))]"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://a59a8d98c3ee:4040/jobs/job?id=425",
+              "$$hashKey": "object:9120"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1630773592058_1084690592",
+      "id": "paragraph_1630702168578_1751743734",
+      "dateCreated": "2021-09-04T16:39:52+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:403",
+      "dateFinished": "2021-09-04T21:49:07+0000",
+      "dateStarted": "2021-09-04T21:49:06+0000"
+    },
+    {
+      "text": "%md\n### Functions for filtering and sorting results\n\nget_movies_of_certain_genre - check if genre of movies corresponds to genres in arguments.\nget_list_of_movies - return list of genre, title, year, rating.\nsort_rules - filter for sorting in correct order.\nget_form_for_filter - return list of genre, title, year, rating.",
+      "user": "anonymous",
+      "dateUpdated": "2021-09-04T21:37:36+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1630789860076_688327103",
+      "id": "paragraph_1630789860076_688327103",
+      "dateCreated": "2021-09-04T21:11:00+0000",
+      "status": "FINISHED",
+      "focus": true,
+      "$$hashKey": "object:7341",
+      "dateFinished": "2021-09-04T21:25:33+0000",
+      "dateStarted": "2021-09-04T21:25:33+0000",
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h3>Functions for filtering and sorting results</h3>\n<p>get_movies_of_certain_genre - check if genre of movies corresponds to genres in arguments.<br />\nget_list_of_movies - return list of genre, title, year, rating.<br />\nsort_rules - filter for sorting in correct order.<br />\nget_form_for_filter - return list of genre, title, year, rating.</p>\n\n</div>"
+          }
+        ]
+      }
+    },
+    {
+      "text": "%pyspark\n\ndef get_movies_of_certain_genre(line):\n\n    genre, title, year, rating = line\n    \n    if (genre in GENRES):\n        return [genre, title, year, rating]\n        \n\ndef get_list_of_movies(line, genre):\n    \n    title = line[1][0][0]\n    year = line[1][0][1]\n    rating = line[1][1]\n\n    return [genre, title, year, rating]\n    \n    \ndef sort_rules(row):\n    \n    genre, title, year, rating = row\n    year = int(year)\n    \n    return [genre, -rating, -year, title]\n    \n\ndef get_form_for_filter(row):\n    \n    genre, title, year, rating = row\n    \n    return [genre, [[title, year, rating]]]\n    \n    \ndef get_n_movies(line):\n    res_movies = []\n    count = 1\n    \n    genre, movies = line\n    for movie in movies:\n        if count > N:\n            break\n        title, year, rating = movie\n        res_movies.append([genre, title, year, rating])\n        count += 1\n    return res_movies\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-09-04T21:49:12+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1630773592058_1207856252",
+      "id": "paragraph_1630705312410_614578316",
+      "dateCreated": "2021-09-04T16:39:52+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:404",
+      "dateFinished": "2021-09-04T21:49:12+0000",
+      "dateStarted": "2021-09-04T21:49:12+0000"
+    },
+    {
+      "text": "%md\n### RDD of sorted movies\n\nrdd_sorted_movies - filtering by genres and then sorting movies.",
+      "user": "anonymous",
+      "dateUpdated": "2021-09-04T21:37:42+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1630790763732_937724426",
+      "id": "paragraph_1630790763732_937724426",
+      "dateCreated": "2021-09-04T21:26:03+0000",
+      "status": "FINISHED",
+      "focus": true,
+      "$$hashKey": "object:7553",
+      "dateFinished": "2021-09-04T21:27:40+0000",
+      "dateStarted": "2021-09-04T21:27:40+0000",
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h3>RDD of sorted movies</h3>\n<p>rdd_sorted_movies - filtering by genres and then sorting movies.</p>\n\n</div>"
+          }
+        ]
+      }
+    },
+    {
+      "text": "%pyspark\n\n# line[1][0][2] - each genre in genres from RDD\n\nrdd_sorted_movies = rdd_movies_with_ratings.flatMap(lambda line: [get_list_of_movies(line, genre) for genre in line[1][0][2]])\\\n                          .map(get_movies_of_certain_genre)\\\n                          .filter(lambda row: row != None)\\\n                          .sortBy(sort_rules)\\\n                          .map(get_form_for_filter)\\\n                          .reduceByKey(lambda x, y: x + y )\\\n                          .sortByKey()\n\nrdd_sorted_movies.collect()",
+      "user": "anonymous",
+      "dateUpdated": "2021-09-04T21:49:18+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "[('Crime',\n  [['Godfather The ', '1972', 4.2890625],\n   ['Godfather: Part II The ', '1974', 4.25968992248062],\n   ['City of God Cidade de Deus ', '2002', 4.1466666666666665],\n   ['Godfather: Part III The ', '1990', 3.3555555555555556],\n   ['Playing God ', '1997', 2.5]]),\n ('Fantasy',\n  [['Godzilla: Final Wars Gojira: Fainaru uôzu ', '2004', 3.0],\n   ['Oh God! ', '1977', 2.5]]),\n ('Thriller',\n  [['City of God Cidade de Deus ', '2002', 4.1466666666666665],\n   ['Godfather: Part III The ', '1990', 3.3555555555555556],\n   ['Godsend ', '2004', 2.5],\n   ['Playing God ', '1997', 2.5],\n   ['Godzilla ', '1998', 1.9545454545454546],\n   ['Godzilla : The Legend Is Reborn Gojira Godzilla Return of Godzilla The ',\n    '1984',\n    1.5]]),\n ('War', [['Gods and Generals ', '2003', 3.0]])]"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://a59a8d98c3ee:4040/jobs/job?id=426",
+              "$$hashKey": "object:9259"
+            },
+            {
+              "jobUrl": "http://a59a8d98c3ee:4040/jobs/job?id=427",
+              "$$hashKey": "object:9260"
+            },
+            {
+              "jobUrl": "http://a59a8d98c3ee:4040/jobs/job?id=428",
+              "$$hashKey": "object:9261"
+            },
+            {
+              "jobUrl": "http://a59a8d98c3ee:4040/jobs/job?id=429",
+              "$$hashKey": "object:9262"
+            },
+            {
+              "jobUrl": "http://a59a8d98c3ee:4040/jobs/job?id=430",
+              "$$hashKey": "object:9263"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1630773592058_1225912497",
+      "id": "paragraph_1630705651080_823161366",
+      "dateCreated": "2021-09-04T16:39:52+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:405",
+      "dateFinished": "2021-09-04T21:49:20+0000",
+      "dateStarted": "2021-09-04T21:49:18+0000"
+    },
+    {
+      "text": "%md\n### RDD of N movies and save it into folder /tmp/output\n\nrdd_of_n_movies - get N movies of each genre.",
+      "user": "anonymous",
+      "dateUpdated": "2021-09-04T21:37:48+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1630790871992_155557340",
+      "id": "paragraph_1630790871992_155557340",
+      "dateCreated": "2021-09-04T21:27:51+0000",
+      "status": "FINISHED",
+      "focus": true,
+      "$$hashKey": "object:7669",
+      "dateFinished": "2021-09-04T21:31:03+0000",
+      "dateStarted": "2021-09-04T21:31:03+0000",
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h3>RDD of N movies and save it into folder /tmp/output</h3>\n<p>rdd_of_n_movies - get N movies of each genre.</p>\n\n</div>"
+          }
+        ]
+      }
+    },
+    {
+      "text": "%pyspark\n\nrdd_of_n_movies = rdd_sorted_movies.flatMap(get_n_movies)\n\nrdd_of_n_movies.saveAsTextFile(\"///tmp/output\")\n\nrdd_of_n_movies.collect()\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-09-04T21:49:53+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "[['Crime', 'Godfather The ', '1972', 4.2890625],\n ['Crime', 'Godfather: Part II The ', '1974', 4.25968992248062],\n ['Crime', 'City of God Cidade de Deus ', '2002', 4.1466666666666665],\n ['Crime', 'Godfather: Part III The ', '1990', 3.3555555555555556],\n ['Crime', 'Playing God ', '1997', 2.5],\n ['Fantasy', 'Godzilla: Final Wars Gojira: Fainaru uôzu ', '2004', 3.0],\n ['Fantasy', 'Oh God! ', '1977', 2.5],\n ['Thriller', 'City of God Cidade de Deus ', '2002', 4.1466666666666665],\n ['Thriller', 'Godfather: Part III The ', '1990', 3.3555555555555556],\n ['Thriller', 'Godsend ', '2004', 2.5],\n ['Thriller', 'Playing God ', '1997', 2.5],\n ['Thriller', 'Godzilla ', '1998', 1.9545454545454546],\n ['War', 'Gods and Generals ', '2003', 3.0]]"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://a59a8d98c3ee:4040/jobs/job?id=431",
+              "$$hashKey": "object:9357"
+            },
+            {
+              "jobUrl": "http://a59a8d98c3ee:4040/jobs/job?id=432",
+              "$$hashKey": "object:9358"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1630773592058_1351137823",
+      "id": "paragraph_1630763799392_178727657",
+      "dateCreated": "2021-09-04T16:39:52+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:406",
+      "dateFinished": "2021-09-04T21:49:54+0000",
+      "dateStarted": "2021-09-04T21:49:53+0000"
+    },
+    {
+      "text": "%md\n### Print results local",
+      "user": "anonymous",
+      "dateUpdated": "2021-09-04T22:03:13+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 6,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1630791115421_1422475759",
+      "id": "paragraph_1630791115421_1422475759",
+      "dateCreated": "2021-09-04T21:31:55+0000",
+      "status": "FINISHED",
+      "focus": true,
+      "$$hashKey": "object:7837",
+      "dateFinished": "2021-09-04T22:03:09+0000",
+      "dateStarted": "2021-09-04T22:03:09+0000",
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h3>Print results local</h3>\n\n</div>"
+          }
+        ]
+      }
+    },
+    {
+      "text": "%md\n### Print result with HDFS",
+      "user": "anonymous",
+      "dateUpdated": "2021-09-04T22:04:29+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 6,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1630793003459_1088651456",
+      "id": "paragraph_1630793003459_1088651456",
+      "dateCreated": "2021-09-04T22:03:23+0000",
+      "status": "FINISHED",
+      "focus": true,
+      "$$hashKey": "object:10525",
+      "dateFinished": "2021-09-04T22:04:20+0000",
+      "dateStarted": "2021-09-04T22:04:20+0000",
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h3>Print result with HDFS</h3>\n\n</div>"
+          }
+        ]
+      }
+    },
+    {
+      "text": "%sh\ncat /tmp/output/*",
+      "user": "anonymous",
+      "dateUpdated": "2021-09-04T22:01:29+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "sh",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 6,
+        "editorMode": "ace/mode/sh",
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "['Crime', 'Godfather The ', '1972', 4.2890625]\n['Crime', 'Godfather: Part II The ', '1974', 4.25968992248062]\n['Crime', 'City of God Cidade de Deus ', '2002', 4.1466666666666665]\n['Crime', 'Godfather: Part III The ', '1990', 3.3555555555555556]\n['Crime', 'Playing God ', '1997', 2.5]\n['Fantasy', 'Godzilla: Final Wars Gojira: Fainaru uôzu ', '2004', 3.0]\n['Fantasy', 'Oh God! ', '1977', 2.5]\n['Thriller', 'City of God Cidade de Deus ', '2002', 4.1466666666666665]\n['Thriller', 'Godfather: Part III The ', '1990', 3.3555555555555556]\n['Thriller', 'Godsend ', '2004', 2.5]\n['Thriller', 'Playing God ', '1997', 2.5]\n['Thriller', 'Godzilla ', '1998', 1.9545454545454546]\n['War', 'Gods and Generals ', '2003', 3.0]\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1630773592058_467032108",
+      "id": "paragraph_1630772058823_1461299147",
+      "dateCreated": "2021-09-04T16:39:52+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:407",
+      "dateFinished": "2021-09-04T21:50:00+0000",
+      "dateStarted": "2021-09-04T21:50:00+0000",
+      "focus": true
+    },
+    {
+      "text": "%sh\nhdfs dfs -cat /tmp/output/*",
+      "user": "anonymous",
+      "dateUpdated": "2021-09-04T22:05:28+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "sh",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 6,
+        "editorMode": "ace/mode/sh",
+        "fontSize": 9,
+        "results": {},
+        "enabled": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1630792895169_273711107",
+      "id": "paragraph_1630792895169_273711107",
+      "dateCreated": "2021-09-04T22:01:35+0000",
+      "status": "FINISHED",
+      "focus": true,
+      "$$hashKey": "object:10392",
+      "dateFinished": "2021-09-04T22:05:03+0000",
+      "dateStarted": "2021-09-04T22:05:03+0000",
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "['Crime', 'Godfather The ', '1972', 4.2890625]\n['Crime', 'Godfather: Part II The ', '1974', 4.25968992248062]\n['Crime', 'City of God Cidade de Deus ', '2002', 4.1466666666666665]\n['Crime', 'Godfather: Part III The ', '1990', 3.3555555555555556]\n['Crime', 'Playing God ', '1997', 2.5]\n['Fantasy', 'Godzilla: Final Wars Gojira: Fainaru uôzu ', '2004', 3.0]\n['Fantasy', 'Oh God! ', '1977', 2.5]\n['Thriller', 'City of God Cidade de Deus ', '2002', 4.1466666666666665]\n['Thriller', 'Godfather: Part III The ', '1990', 3.3555555555555556]\n['Thriller', 'Godsend ', '2004', 2.5]\n['Thriller', 'Playing God ', '1997', 2.5]\n['Thriller', 'Godzilla ', '1998', 1.9545454545454546]\n['War', 'Gods and Generals ', '2003', 3.0]\n"
+          }
+        ]
+      }
+    },
+    {
+      "text": "%md \n### Results in table form",
+      "user": "anonymous",
+      "dateUpdated": "2021-09-04T21:37:59+0000",
+      "progress": 0,
+      "config": {
+        "tableHide": false,
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true,
+          "completionKey": "TAB",
+          "completionSupport": false
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/markdown",
+        "fontSize": 9,
+        "editorHide": true,
+        "results": {},
+        "enabled": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1630791145774_1386768826",
+      "id": "paragraph_1630791145774_1386768826",
+      "dateCreated": "2021-09-04T21:32:25+0000",
+      "status": "FINISHED",
+      "focus": true,
+      "$$hashKey": "object:7924",
+      "dateFinished": "2021-09-04T21:32:39+0000",
+      "dateStarted": "2021-09-04T21:32:39+0000",
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<h3>Results in table form</h3>\n\n</div>"
+          }
+        ]
+      }
+    },
+    {
+      "text": "%pyspark\n\nprint(\"%table genre\\ttitle\\tyear\\trating\")\n\nfor genre, title, year, rating in rdd_of_n_movies.collect():\n    print(genre,'\\t',title,'\\t',year,'\\t',rating)",
+      "user": "anonymous",
+      "dateUpdated": "2021-09-04T21:50:10+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "colWidth": 12,
+        "editorMode": "ace/mode/python",
+        "fontSize": 9,
+        "results": {
+          "0": {
+            "graph": {
+              "mode": "table",
+              "height": 300,
+              "optionOpen": false,
+              "setting": {
+                "table": {
+                  "tableGridState": {},
+                  "tableColumnTypeState": {
+                    "names": {
+                      "genre": "string",
+                      "title": "string",
+                      "year": "string",
+                      "rating": "string"
+                    },
+                    "updated": false
+                  },
+                  "tableOptionSpecHash": "[{\"name\":\"useFilter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable filter for columns\"},{\"name\":\"showPagination\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable pagination for better navigation\"},{\"name\":\"showAggregationFooter\",\"valueType\":\"boolean\",\"defaultValue\":false,\"widget\":\"checkbox\",\"description\":\"Enable a footer for displaying aggregated values\"}]",
+                  "tableOptionValue": {
+                    "useFilter": false,
+                    "showPagination": false,
+                    "showAggregationFooter": false
+                  },
+                  "updated": false,
+                  "initialized": false
+                }
+              },
+              "commonSetting": {}
+            }
+          }
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "genre\ttitle\tyear\trating\nCrime \t Godfather The  \t 1972 \t 4.2890625\nCrime \t Godfather: Part II The  \t 1974 \t 4.25968992248062\nCrime \t City of God Cidade de Deus  \t 2002 \t 4.1466666666666665\nCrime \t Godfather: Part III The  \t 1990 \t 3.3555555555555556\nCrime \t Playing God  \t 1997 \t 2.5\nFantasy \t Godzilla: Final Wars Gojira: Fainaru uôzu  \t 2004 \t 3.0\nFantasy \t Oh God!  \t 1977 \t 2.5\nThriller \t City of God Cidade de Deus  \t 2002 \t 4.1466666666666665\nThriller \t Godfather: Part III The  \t 1990 \t 3.3555555555555556\nThriller \t Godsend  \t 2004 \t 2.5\nThriller \t Playing God  \t 1997 \t 2.5\nThriller \t Godzilla  \t 1998 \t 1.9545454545454546\nWar \t Gods and Generals  \t 2003 \t 3.0\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://a59a8d98c3ee:4040/jobs/job?id=433",
+              "$$hashKey": "object:9562"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1630773592058_1826980207",
+      "id": "paragraph_1630772371417_238119530",
+      "dateCreated": "2021-09-04T16:39:52+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:408",
+      "dateFinished": "2021-09-04T21:50:11+0000",
+      "dateStarted": "2021-09-04T21:50:10+0000"
+    },
+    {
+      "text": "%pyspark\n",
+      "user": "anonymous",
+      "dateUpdated": "2021-09-04T21:50:10+0000",
+      "progress": 0,
+      "config": {
+        "colWidth": 12,
+        "fontSize": 9,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1630792210680_6830248",
+      "id": "paragraph_1630792210680_6830248",
+      "dateCreated": "2021-09-04T21:50:10+0000",
+      "status": "READY",
+      "focus": true,
+      "$$hashKey": "object:9388"
+    }
+  ],
+  "name": "get_movies",
+  "id": "2GFHK1S8N",
+  "defaultInterpreterGroup": "spark",
+  "version": "0.9.0",
+  "noteParams": {},
+  "noteForms": {},
+  "angularObjects": {},
+  "config": {
+    "isZeppelinNotebookCronEnable": false,
+    "looknfeel": "default",
+    "personalizedMode": "false"
+  },
+  "info": {},
+  "path": "/get_movies"
+}

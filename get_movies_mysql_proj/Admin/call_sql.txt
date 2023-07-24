@@ -1,0 +1,10 @@
+create_stagingDB.sql
+create_moviesDB.sql
+create_staging_movies.sql
+create_staging_ratings.sql
+load_staging_movies.sql
+load_staging_ratings.sql
+create_movies_with_distinct_genres.sql
+sp_split_genres.sql
+create_movies.sql
+sp_find_top_rated_movies.sql

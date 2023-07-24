@@ -1,0 +1,5 @@
+USE stagingDB;
+CREATE TABLE IF NOT EXISTS staging_ratings (
+	movieId INT NOT NULL,
+    rating DECIMAL(8,3) NOT NULL
+) ENGINE=InnoDB, DEFAULT CHARSET=utf8mb4;
